@@ -1,41 +1,43 @@
-# PPL 173 (Erdős #711) — New World-Record Bound $\exp(O((\log n / \log\log n)^{1/2}))$ via Bad-Difference Absorption, and Exact Minimax Barriers Against Polylogarithmic 3-Path Bounds
+# Erdős Problem #711 — $\exp(O((\log n / \log\log n)^{1/2}))$ Bound via Bad-Difference Absorption and Exact Minimax Barriers Against Polylogarithmic 3-Path Bounds
 
-**Agent:** `prover-ppl173-polylog`
 **Date:** November 25, 2026
-**Baseline Reference:** [REPORT.md](file:///D:/Arithmetica4Prizeproblems/scripts/ppl173_push/REPORT.md) (`exp(O((log n / log log n)^{2/3}))`, Lean-verified in [PPL173_WorldRecordFourThirds.lean](file:///D:/Arithmetica4Prizeproblems/lean/RHDirect/PPL173_WorldRecordFourThirds.lean))
+**Prior `2/3` Baseline:** `nil-commits/erdos711-four-thirds-lean4` (`exp(O((log n / log log n)^{2/3}))`, Lean 4 verified in `RHDirect/PPL173_WorldRecordFourThirds.lean`)
+**Lean 4 Formalizations (this repository):**
+- Upper bound (Theorem 2): `RHDirect/PPL173_WorldRecordHalf.lean`
+- Minimax barriers (Theorems 1, 3a, 3b, 3c): `RHDirect/PPL173_CauchyBarriers.lean`
 
 ---
 
 ## Executive Summary
 
-We answer both parts of the subpolynomial-refinement question for Erdős #711 ($F(n) := \max_{m \ge 0} f(n, m)$) with **complete, self-contained proofs** and **exact matching minimax constants**:
+We answer both parts of the subpolynomial-refinement question for Erdős #711 ($F(n) := \max_{m \ge 0} f(n, m)$) with **complete, self-contained proofs**, **Lean 4 kernel verification** of all five main asymptotic theorems, and **exact matching minimax constants**:
 
 1. **Part 1 — Multi-Scale Partitioning Alone Cannot Beat `2/3` (Barrier Theorem 1):**
-   Under the unabsorbed Lemma A/B criterion of [REPORT.md](file:///D:/Arithmetica4Prizeproblems/scripts/ppl173_push/REPORT.md), **no partition whatsoever** of $D = (N/2, N]$ — neither dyadic prime intervals, nor fixing $Y$-smooth parts, nor any arbitrary non-multiplicative set-theoretic partition $D = \bigsqcup_\alpha S_\alpha$ — can beat $\left(\frac{\log n}{\log\log n}\right)^{2/3}$. Specifically, we prove unconditionally that for every partition $D = \bigsqcup_\alpha S_\alpha$,
+   Under the unabsorbed Lemma A/B criterion of our prior `2/3` work (`nil-commits/erdos711-four-thirds-lean4`), **no partition whatsoever** of $D = (N/2, N]$ — neither dyadic prime intervals, nor fixing $Y$-smooth parts, nor any arbitrary non-multiplicative set-theoretic partition $D = \bigsqcup_\alpha S_\alpha$ — can beat $\left(\frac{\log n}{\log\log n}\right)^{2/3}$. Specifically, we prove unconditionally that for every partition $D = \bigsqcup_\alpha S_\alpha$,
    $$\sum_\alpha \kappa(S_\alpha; N^{4/3})^{2/3}\, |S_\alpha|^{1/3} \;\ge\; N^{1/3} \exp\!\left(\left(18^{-1/3} - o(1)\right)\left(\frac{\log N}{\log\log N}\right)^{2/3}\right) \qquad (18^{-1/3} \approx 0.38157),$$
-   which **matches to the exact leading constant** the tightened complementary-divisor global-Lagrange upper bound!
+   which **matches to the exact leading constant** the tightened complementary-divisor global-Lagrange upper bound! (The unconditional asymptotic lower bound $\exp(c(\log N / \log\log N)^{2/3})$ is Lean 4 kernel-verified as `PPL173Barriers.barrier1_unabsorbed_two_thirds`.)
 
-2. **Part 2 — NEW WORLD-RECORD THEOREM: Breaking `2/3` Down to `1/2` via Bad-Difference Absorption!**
+2. **Part 2 — Breaking `2/3` Down to `1/2` via Bad-Difference Absorption (Theorem 2):**
    By dissecting where $\kappa = \max_{0 < t \le H} r_D(t)$ enters Lemma A, we observe that $\kappa$ enters in **two distinct places**:
    - **Place 1 (3-path reflection multiplicity):** bounding $r_D(|w - u|)$ when reconstructing $e \in D$ from $(d, w, z)$.
    - **Place 2 (residue-class Cauchy–Schwarz off-diagonal):** bounding $\sum_{z_1 \neq z_2 \in U} r_D(|z_1 - z_2|)$.
 
    We prove a **15-line elementary Bad-Difference Absorption Lemma (Lemma A')** that **completely eliminates worst-case $\kappa$ from Place 1**: for any $D \subseteq (N/2, N]$ and every $e \in D$, the exact dyadic harmonic bound
    $$\sum_{c = 1}^{\ell - 1} r_D(c \cdot e) \;\le\; (\ell - 1)\,\tau(e)$$
-   plus Markov's inequality shows that at most $\frac{\ell - 1}{2}$ choices of $w \in S_{e, \delta} \setminus \{u\}$ have $r_D(|w - u|) > K_1 := 4 \max_{e \in D} \tau(e)$, so **all bad 3-paths are absorbed directly into the LHS $|\mathcal{T}|$**! This replaces $\kappa^2 |U|^2$ by $K_1 \kappa |U|^2$, cutting the $\kappa$-exponent in Lemma B from $2/3$ down to **$1/3$** ($(K_1 \kappa M)^{1/3} / \ell$), and yields an **unconditional, 100% elementary new world record for Erdős #711**:
+   plus Markov's inequality shows that at most $\frac{\ell - 1}{2}$ choices of $w \in S_{e, \delta} \setminus \{u\}$ have $r_D(|w - u|) > K_1 := 4 \max_{e \in D} \tau(e)$, so **all bad 3-paths are absorbed directly into the LHS $|\mathcal{T}|$**! This replaces $\kappa^2 |U|^2$ by $K_1 \kappa |U|^2$, cutting the $\kappa$-exponent in Lemma B from $2/3$ down to **$1/3$** ($(K_1 \kappa M)^{1/3} / \ell$), and yields an **unconditional, 100% elementary, Lean 4 kernel-verified upper bound for Erdős #711**:
    $$\boxed{F(n) \;\le\; n^{4/3} \exp\!\left(O\!\left(\left(\frac{\log n}{\log\log n}\right)^{1/2}\right)\right)}$$
-   — strictly beating our own Lean-verified `2/3` world record by a super-exponential factor (e.g., **$13.3\times$ smaller** in the exponent at $\log n = 10^8$, and **$1{,}400\times$ smaller** than Chen–Korsky `arXiv:2607.26450`).
-   Moreover, the proof is a **~200-line drop-in upgrade** to [PPL173_WorldRecordFourThirds.lean](file:///D:/Arithmetica4Prizeproblems/lean/RHDirect/PPL173_WorldRecordFourThirds.lean) (keeping Lemma C1, Lemma C2, all prime buckets, and Hall's theorem intact!). Using the complementary-divisor bound $\Omega_{B_m}(t/d) \le R'_m$ and subexponential $K_1$, the leading constant in the exponent tightens to $\frac{2}{3\sqrt{3}} + o(1) \approx 0.38490$.
+   — strictly beating the `2/3` bound by a super-exponential factor (at $\log n = 10^8$, the drop-in exponent is **$10.8\times$ smaller** than the `2/3` drop-in bound and **$385\times$ smaller** than Chen–Korsky `arXiv:2607.26450`, while the sharp constant $\frac{2}{3\sqrt{3}} \approx 0.38490$ is **$13.1\times$ smaller** than the sharp `2/3` bound and **$3{,}730\times$ smaller** than Chen–Korsky; see `scripts/audit_half_theorem.py`).
+   The full proof is Lean 4 kernel-verified in `RHDirect/PPL173_WorldRecordHalf.lean`. Using the complementary-divisor bound $\Omega_{B_m}(t/d) \le R'_m$ and subexponential $K_1$, the leading constant in the exponent tightens to $\frac{2}{3\sqrt{3}} + o(1) \approx 0.38490$ (Section 2, Step 4).
 
 3. **Part 3 — Exact `1/2` Barrier Against Polylogarithmic $n^{4/3} (\log n)^C$ (Barrier Theorems 2a, 2b, 2c):**
    Can we push past `1/2` to $\exp(O(\sqrt{\log n} / \log\log n))$ or pure polylogarithmic $n^{4/3}(\log n)^C$ by further partitioning or replacing Place 2's $\ell^\infty$ bound $\kappa$ by the **$\ell^2$ average over $U \times U$**, $\bar{\kappa}(S_\alpha; U) := \frac{1}{|U|^2} \sum_{z_1 \neq z_2 \in U} r_{S_\alpha}(|z_1 - z_2|)$?
-   **NO — within the 3-path $m_d(c)^2$ Cauchy–Schwarz framework, `1/2` is an exact, insurmountable wall:**
-   - **Barrier 2a (All partitions, worst-case $\kappa$, even with $K_1 \equiv 1$):** Every partition $D = \bigsqcup_\alpha S_\alpha$ satisfies
+   **NO — within the 3-path $m_d(c)^2$ Cauchy–Schwarz framework, `1/2` is an exact, insurmountable wall** (all three unconditional asymptotic barriers are Lean 4 kernel-verified in `RHDirect/PPL173_CauchyBarriers.lean`):
+   - **Barrier 2a (`barrier2a_absorbed_half` — all partitions, worst-case $\kappa$, even with $K_1 \equiv 1$):** Every partition $D = \bigsqcup_\alpha S_\alpha$ satisfies
      $$\sum_\alpha \kappa(S_\alpha; N^{4/3})^{1/3}\, |S_\alpha|^{1/3} \;\ge\; N^{1/3} \exp\!\left(\left(\frac{2}{3\sqrt{3}} - o(1)\right)\left(\frac{\log N}{\log\log N}\right)^{1/2}\right) \qquad \left(\frac{2}{3\sqrt{3}} \approx 0.38490\right),$$
      matching our sharp upper bound to the **exact leading constant**!
-   - **Barrier 2b (Single-slice $\ell^2$ average-over-$U^2$ barrier):** Even with $K_1 = 1$ and Place 2 evaluated using the exact average $\bar{\kappa}(S_k; U)$ (not $\max_t r_{S_k}(t)$), for the single bottleneck slice $S_k$ at $k = \lfloor (\log N / \log\log N)^{1/2} \rfloor$, there is an explicit set $U = \{T_1 j : 1 \le j \le |S_k|\} \subseteq (0, N^{4/3}]$ (which is literally contained in $U = \Gamma_I(S)$ whenever $T_1 \in S$!) satisfying
+   - **Barrier 2b (`barrier2b_single_slice_avg_half` — single-slice $\ell^2$ average-over-$U^2$ barrier):** Even with $K_1 = 1$ and Place 2 evaluated using the exact average $\bar{\kappa}(S_k; U)$ (not $\max_t r_{S_k}(t)$), on a single prime-count slice $S_k = \{d \in (N/2, N] : \Omega_{B_0}(d) = k\}$ for $B_0 = (2^{J_{\mathrm{lo}}}, 2^{2 J_{\mathrm{lo}}}] \cap \mathbb{P} \approx (\log N, (\log N)^2]$ and $k = \Theta((\log N / \log\log N)^{1/2})$, there is an explicit progression $U = \{T_1 j : 1 \le j \le |S_k|\} \subseteq (0, N^{4/3}]$ satisfying
      $$\left(\bar{\kappa}(S_k; U)\, |S_k|\right)^{1/3} \;\ge\; N^{1/3} \exp\!\left(+\Omega\!\left(\left(\frac{\log N}{\log\log N}\right)^{1/2}\right)\right).$$
-   - **Barrier 2c (All partitions tested simultaneously by one deterministic set $U_0$):** Even for the single deterministic primorial set $U_0 = \{P j : 1 \le j \le N\} \subseteq (0, N^{4/3}]$ ($P = \prod_{p \le (\frac{1}{3}-\varepsilon)\log N} p$), every partition satisfies
+   - **Barrier 2c (`barrier2c_deterministic_U0_all_partitions` — all partitions tested simultaneously by one deterministic set $U_0$):** Even for the single deterministic primorial set $U_0 = \{P j : 1 \le j \le N\} \subseteq (0, N^{4/3}]$ ($P = \prod_{p \le (\frac{1}{3}-\varepsilon)\log N} p$), every partition satisfies
      $$\sum_\alpha \bar{\kappa}(S_\alpha; U_0)^{1/3}\, |S_\alpha|^{1/3} \;\ge\; N^{1/3} \exp\!\left(\left(\frac{4}{3\sqrt{3}} - o(1)\right)\frac{(\log N)^{1/2}}{\log\log N}\right).$$
    - We also show explicitly why Rankin-tilted Hölder bounds ($\sigma = 1 + \eta$) on $\max_{|T|=|U|} \sum_{t \in T} g(t)$, positive-semidefinite kernel splitting of $r_D(|w-z|/2)$ (which hits a diagonal loss $2|D|^2 \ell$ via the modulus-density barrier), and multiplicative weighting $w(d)$ all stall at `1/2`.
 
@@ -45,7 +47,7 @@ We answer both parts of the subpolynomial-refinement question for Erdős #711 ($
 
 ### 1.1 Where $\kappa$ Enters Lemma A
 
-In Lemma A of [REPORT.md](file:///D:/Arithmetica4Prizeproblems/scripts/ppl173_push/REPORT.md), for $D \subseteq (N/2, N]$ and $U \subseteq J = (m, m+H]$ with $\bigcup_{d \in D} S_d \subseteq U$, the directed 3-path count
+In the unabsorbed Lemma A (`nil-commits/erdos711-four-thirds-lean4`), for $D \subseteq (N/2, N]$ and $U \subseteq J = (m, m+H]$ with $\bigcup_{d \in D} S_d \subseteq U$, the directed 3-path count
 $$|\mathcal{T}| = (\ell - 1)\sum_{u \in U} \deg_D(u)(\deg_D(u) - 1) \;\ge\; (\ell - 1)\left(\frac{4|D|^2\ell^2}{|U|} - 2|D|\ell\right)$$
 is split into $\mathcal{T}_1 \sqcup \mathcal{T}_2$. Setting $r_D(t) := \#\{e \in D : e \mid t\}$ for $t > 0$, the exact un-estimated bound for $\mathcal{T}_1$ (and symmetrically $\mathcal{T}_2$) is
 $$|\mathcal{T}_1| \;\le\; \sum_{d \in D} \sum_{\substack{w, z \in U,\; w \neq z \\ z \equiv 2a_d - w \pmod d \\ u := (w+z)/2 \in S_d}} r_D(|w - u|).$$
@@ -187,9 +189,9 @@ contradicting $|U| < |S|$. $\blacksquare$
 
 ### Step 3 — Drop-In Multi-Scale Euler–Rankin Proof of Theorem 2
 
-We reuse the **exact same partition** as [REPORT.md](file:///D:/Arithmetica4Prizeproblems/scripts/ppl173_push/REPORT.md) (and [PPL173_WorldRecordFourThirds.lean](file:///D:/Arithmetica4Prizeproblems/lean/RHDirect/PPL173_WorldRecordFourThirds.lean)):
+We reuse the **exact same partition** as the `2/3` proof (`nil-commits/erdos711-four-thirds-lean4`):
 - Dyadic scales $S^{(j)} = S \cap (N_j/2, N_j]$ with $N_j = n / 2^j$ and $\ell_j \ge \frac{H}{4 N_j} = \frac{2^j H}{4 n}$.
-- **Regime 1 ($j \ge j_0 := \lceil \frac{\log n}{\log\log n} \rceil$):** Unpartitioned, with $M_j \le N_j$ and $K_{1,j} \le 4\tau_{\max}(H)$, $\kappa_j \le \tau_{\max}(H)$. As in [REPORT.md](file:///D:/Arithmetica4Prizeproblems/scripts/ppl173_push/REPORT.md), $(K_{1,j}\kappa_j)^{1/3} 2^{-4j/3} \le 4^{1/3} \exp((\frac{8}{9} - \frac{4}{3} + o(1)) \log 2 \cdot \frac{\log n}{\log\log n}) = o(1)$.
+- **Regime 1 ($j \ge j_0 := \lceil \frac{\log n}{\log\log n} \rceil$):** Unpartitioned, with $M_j \le N_j$ and $K_{1,j} \le 4\tau_{\max}(H)$, $\kappa_j \le \tau_{\max}(H)$. As in the `2/3` proof, $(K_{1,j}\kappa_j)^{1/3} 2^{-4j/3} \le 4^{1/3} \exp((\frac{8}{9} - \frac{4}{3} + o(1)) \log 2 \cdot \frac{\log n}{\log\log n}) = o(1)$.
 - **Regime 2 ($0 \le j < j_0$):** Split primes at $Y_{\mathrm{cut}} := 4 \frac{\log n}{\log\log n}$ with doubly-exponential buckets $B_m := (\max(Y_{\mathrm{cut}}, \exp(e^m)),\, \min(n, \exp(e^{m+1}))]$ ($m_{\mathrm{start}} \le m \le M_{\max} \le \log\log n$), factoring $d = q_{\mathrm{sm}} \cdot u_{\mathrm{sm}} \cdot \prod_m d_m$ into slices $S^{(j)}_{a, s, k_0, \vec{k}}$.
 
 **Exact Factored Bound on $K_1(a, s, k_0, \vec{k}) := 4 \max_{e \in S^{(j)}_{a, s, k_0, \vec{k}}} \tau(e)$:**
@@ -201,7 +203,7 @@ For every $e = q_{\mathrm{sm}} \cdot u_{\mathrm{sm}} \cdot \prod_m d_m$ in the s
 3. **Large-prime buckets ($d_m$ with $\Omega(d_m) = k_m$):** Since $e + 1 \le 2^e$ for all $e \ge 0$, $\tau(d_m) \le 2^{k_m}$.
 
 **Exact Factored Summation of $\sum_{a, s, k_0, \vec{k}} (K_1 \cdot \kappa \cdot M_j)^{1/3}$:**
-Combining Lemma C1 ($\kappa$) and Lemma C2 ($M_j$) from [REPORT.md](file:///D:/Arithmetica4Prizeproblems/scripts/ppl173_push/REPORT.md) with our $K_1$ bound, the sum factors completely as:
+Combining Lemma C1 ($\kappa$) and Lemma C2 ($M_j$) from the `2/3` partition framework with our $K_1$ bound, the sum factors completely as:
 $$(12\log n)^{1/3} N_j^{1/3} \cdot \left(\sum_{a, s} F'_q(a, s)\right) \cdot \left(\sum_{k_0} F'_u(k_0)\right) \cdot \prod_{m} \left(\sum_{k_m = 0}^{R_m} F'_m(k_m)\right).$$
 Applying the elementary identity $\max_{k > 0} (e A / k)^{2k/3} = \exp(\frac{2}{3} A)$ (attained at $k = A$) to each factor:
 
@@ -226,7 +228,7 @@ Applying the elementary identity $\max_{k > 0} (e A / k)^{2k/3} = \exp(\frac{2}{
    $$\sum_{m = m_{\mathrm{start}}}^{M_{\max}} \frac{2}{3}\sqrt{\frac{40}{11} R_m \mu_m} \;\le\; (1 + o(1))\,\frac{2}{3}\sqrt{\frac{40}{11}}\,\frac{\sqrt{4/3}}{1 - e^{-1/2}} \left(\frac{\log n}{\log\log n}\right)^{1/2} \approx 3.731 \left(\frac{\log n}{\log\log n}\right)^{1/2},$$
    while $\sum_m \log(R_m + 1) = O((\log\log n)^2)$.
 
-Summing over dyadic scales $0 \le j < j_0$ multiplies by $\sum_{j=0}^\infty 2^{-4j/3} < 1.66$, and $\Sigma_0 = \sum_\alpha 1/\ell_\alpha = o(1)$ is identical to [REPORT.md](file:///D:/Arithmetica4Prizeproblems/scripts/ppl173_push/REPORT.md) (same slice count $K_j = \exp(O((\log\log n)^2)) \ll n^{1/3}$). By Lemma B' and Hall's Marriage Theorem, Theorem 2 holds. $\blacksquare$
+Summing over dyadic scales $0 \le j < j_0$ multiplies by $\sum_{j=0}^\infty 2^{-4j/3} < 1.66$, and $\Sigma_0 = \sum_\alpha 1/\ell_\alpha = o(1)$ is identical to the `2/3` proof (same slice count $K_j = \exp(O((\log\log n)^2)) \ll n^{1/3}$). By Lemma B' and Hall's Marriage Theorem, Theorem 2 holds. $\blacksquare$
 
 ---
 
@@ -279,19 +281,33 @@ Replacing worst-case $\kappa(S_\alpha; H)$ in Place 2 by the **average** over $U
 $$\bar{\kappa}(S_\alpha; U) := \frac{1}{|U|^2} \sum_{\substack{z_1, z_2 \in U \\ z_1 \neq z_2}} r_{S_\alpha}(|z_1 - z_2|),$$
 **still fails** to break `1/2`, even on a **single bottleneck slice** $S_k$!
 
-**Theorem 3b.** *Let $B_0 := (\frac{\log N}{\log\log N}, \log N]$, $k := \left\lfloor \left(\frac{\log N}{\log\log N}\right)^{1/2} \right\rfloor$, and $S_k := \{d \in (N/2, N] : \Omega_{B_0}(d) = k\}$. Let $T_1 \le N^{1/3}$ be the product of $R'_0 := \left\lfloor \frac{\frac{1}{3}\log N}{\log\log N} \right\rfloor$ primes in $B_0$. Then for the explicit set $U := \{T_1 \cdot j : 1 \le j \le |S_k|\} \subseteq (0, N^{4/3}]$ (which is literally contained in the Hall neighborhood $\Gamma_{(0, H]}(S)$ whenever $T_1 \in S$),*
+**Theorem 3b (Lean 4 verified as `PPL173Barriers.barrier2b_single_slice_avg_half`).** *For all sufficiently large $N$, set $J_{\mathrm{lo}} := \lfloor \log_2 \log N \rfloor + 1$ (so $\log N < 2^{J_{\mathrm{lo}}} \le 2\log N$), let $B_0 := (2^{J_{\mathrm{lo}}}, 2^{2 J_{\mathrm{lo}}}] \cap \mathbb{P} \approx (\log N, (\log N)^2]$, and let $A \subseteq (2^{J_{\mathrm{lo}}}, 2 \cdot 2^{J_{\mathrm{lo}}}] \cap \mathbb{P} \subseteq B_0$ be any subset of $R_0 := \lfloor \frac{\log N}{16 \log\log N} \rfloor$ primes. Set $T_1 := \prod_{p \in A} p \le N^{1/8}$, $k := \lfloor \frac{1}{12} \sqrt{R_0} \rfloor = \Theta((\frac{\log N}{\log\log N})^{1/2})$, and consider the single prime-count slice $S_k := \{d \in (N/2, N] : \Omega_{B_0}(d) = k\}$. Then for the explicit arithmetic progression $U := \{T_1 \cdot j : 1 \le j \le |S_k|\} \subseteq [1, \lfloor N^{4/3} \rfloor]$ (of cardinality $|U| = |S_k|$),*
 $$\left(\bar{\kappa}(S_k; U)\, |S_k|\right)^{1/3} \;\ge\; N^{1/3} \exp\!\left(+\Omega\!\left(\left(\frac{\log N}{\log\log N}\right)^{1/2}\right)\right).$$
 
-**Proof.**
-By standard Mertens/Sathe–Selberg asymptotics, $|S_k| \asymp N \frac{\mu_0^k}{k!}$ where $\mu_0 = \sum_{p \in B_0} \frac{1}{p} \sim \log\log\log N$ (or $\mu_0 \asymp 1$ if $B_0 = (\frac{\log N}{\log\log N}, \frac{e \log N}{\log\log N}]$ — take $B_0' := (\frac{\log N}{\log\log N}, \log N]$ so $\mu_0 \ge 1$ and $M_k = |S_k| = N \exp(-(\frac{1}{2} + o(1))\sqrt{\log N \log\log N})$).
-Every $d_1 \mid T_1$ with $\Omega_{B_0}(d_1) = k$ satisfies $(\frac{\log N}{\log\log N})^k \le d_1 \le (\log N)^k$, spanning at most $O(k \log\log\log N)$ dyadic intervals. By pigeonhole, some dyadic interval $[X/2, X]$ (with $X \le (\log N)^k = N^{o(1)} \ll M_k^{1/2}$) contains at least $\frac{1}{k \log\log N}\binom{R'_0}{k}$ divisors $d_1 \mid T_1$ with $\Omega_{B_0}(d_1) = k$.
+**Proof (100% elementary, zero external analytic theorems).**
+1. **Reciprocal mass $\mu_0$ of $B_0$ and existence of $A$:**
+   Decomposing $B_0$ into $J_{\mathrm{lo}}$ dyadic prime blocks $(2^r, 2^{r+1}]$ ($J_{\mathrm{lo}} \le r < 2 J_{\mathrm{lo}}$) and applying Chebyshev's dyadic lower bound $\pi(2m) - \pi(m) \ge \frac{m}{4 \log(2m)}$ gives
+   $$\mu_0 := \sum_{p \in B_0} \frac{1}{p} \;\ge\; \sum_{r = J_{\mathrm{lo}}}^{2 J_{\mathrm{lo}} - 1} \frac{1}{16 J_{\mathrm{lo}}} = \frac{1}{16}$$
+   (by Mertens' theorem, $\mu_0 \sim \log 2 \approx 0.693$). Similarly, the bottom dyadic block $(2^{J_{\mathrm{lo}}}, 2 \cdot 2^{J_{\mathrm{lo}}}] \subseteq B_0$ contains at least $\frac{\log N}{8 \log\log N} \ge R_0$ primes, so a subset $A$ of size $R_0$ exists, with $T_1 = \prod_{p \in A} p \le (4 \log N)^{R_0} \le N^{1/8}$.
 
-For every $r \in [M_k / 2, M_k]$ that possesses a divisor $c_2 \in [X/2, X]$ with $\gcd(r / c_2, \prod_{p \in B_0} p) = 1$ (which holds for a fraction $\gg (\log X)^{-\delta} \gg (\log N)^{-0.1}$ of all $r \in [M_k/2, M_k]$ by Ford's theorem on divisors in intervals, since $X \le M_k^{1/2}$ and $\prod_{p \in B_0} (1 - 1/p) \gg (\log\log N)^{-1}$), each of the $\ge \frac{1}{k\log\log N}\binom{R'_0}{k}$ divisors $d_1 \mid T_1$ in $[c_2/2, c_2]$ produces a distinct divisor $d := d_1 \cdot (r / c_2) \in (M_k / 4, M_k]$ — wait: rescale $U := \{T_1 \cdot j : 1 \le j \le N\}$ (of size $N$) or shift $r \in [N/2, N]$:
-- If $U = \{T_1 \cdot j : 1 \le j \le N\} \subseteq (0, H]$ (size $N$, realizable inside $\Gamma_{(0, H]}(S)$ whenever $T_1 \in S$), then $r \in [N/2, N]$ gives $d = d_1(r/c_2) \in (N/4, N]$ with $\Omega_{B_0}(d) = k$, so
-  $$\bar{\kappa}(S_k; U) \;\ge\; \frac{1}{(\log N)^2} \binom{R'_0}{k}.$$
-- Even for $|U| = M_k$: pick $c_2 \in [X \cdot \frac{M_k}{2N}, X \cdot \frac{M_k}{N}]$ (possible since $X \cdot \frac{M_k}{N} = \exp((\frac{1}{2} - o(1))\sqrt{\log N \log\log N}) \gg 1$!); then for $r \in [M_k/2, M_k]$ with $c_2 \mid r$, $d = d_1 (r/c_2)$ lies in $(N/4, N]$ and divides $T_1 r = z_1 - z_2$!
-Thus in **both** cases ($|U| = N$ and $|U| = M_k$),
-$$\left(\bar{\kappa}(S_k; U)\, M_k\right)^{1/3} \;\ge\; \frac{N^{1/3}}{\log N} \left(\binom{R'_0}{k} \frac{\mu_0^k}{k!}\right)^{1/3} = N^{1/3} \exp\!\left(+\Omega\!\left(\left(\frac{\log N}{\log\log N}\right)^{1/2}\right)\right). \quad \blacksquare$$
+2. **Elementary lower bound on $|S_k|$:**
+   Every subset $S_0 \in \binom{B_0}{k}$ satisfies $d_1 := \prod_{p \in S_0} p \le (4(\log N)^2)^k \le N^{1/10}$. For each such $S_0$ and each prime $q \in P_0(S_0) := (\frac{N}{2 d_1}, \frac{N}{d_1}] \cap \mathbb{P}$, we have $q > \frac{1}{2} N^{9/10} > 2^{2 J_{\mathrm{lo}}} = \max B_0$, so $d := d_1 q \in (N/2, N]$ has $\Omega_{B_0}(d) = k$ (hence $d \in S_k$), and the map $(S_0, q) \mapsto d_1 q$ is injective by unique prime factorization. By Chebyshev's theorem, $|P_0(S_0)| \ge \frac{N}{16 d_1 \log N}$. Summing over $S_0 \in \binom{B_0}{k}$ and using the elementary symmetric-sum induction $e_k(B_0) := \sum_{S_0 \in \binom{B_0}{k}} \prod_{p \in S_0} \frac{1}{p} \ge \frac{(\mu_0 - k / 2^{J_{\mathrm{lo}}})^k}{k!} \ge \frac{(1/32)^k}{k!}$ (since $k / 2^{J_{\mathrm{lo}}} \le 1/32$) yields
+   $$|S_k| \;\ge\; \frac{N}{16 \log N} \cdot \frac{(1/32)^k}{k!}.$$
+
+3. **Elementary lower bound on $\bar{\kappa}(S_k; U)$:**
+   For every $S_0 \in \binom{A}{k}$ and $q \in P_0(S_0)$, since every $p \in A$ exceeds $\log N$, we have $d_1 = \prod_{p \in S_0} p > (\log N)^k \ge 32 (\log N) (32 k)^k \ge 32 (\log N)\, 32^k k!$, and therefore
+   $$2 q \;\le\; \frac{2 N}{d_1} \;\le\; \frac{N}{16 \log N} \cdot \frac{(1/32)^k}{k!} \;\le\; |S_k| = |U|.$$
+   Write $q_U(d) := \frac{1}{|U|^2} \#\{(z_1, z_2) \in U^2 : z_1 \neq z_2,\; d \mid |z_1 - z_2|\}$, so $\bar{\kappa}(S_k; U) = \sum_{d \in S_k} q_U(d)$ exactly. Because $d_1 \mid T_1$, any pair $(z_1, z_2) = (T_1 j_1, T_1 (j_1 + r q)) \in U^2$ with $1 \le j_1 \le \lfloor |U|/2 \rfloor$ and $1 \le r \le \lfloor \lfloor |U|/2 \rfloor / q \rfloor$ satisfies $d_1 q \mid |z_1 - z_2|$. Counting these pairs gives
+   $$q_U(d_1 q) \;\ge\; \frac{\lfloor |U|/2 \rfloor \cdot \lfloor \lfloor |U|/2 \rfloor / q \rfloor}{|U|^2} \;\ge\; \frac{1}{18 q} \;\ge\; \frac{d_1}{18 N}.$$
+   Summing over $q \in P_0(S_0)$ (using $|P_0(S_0)| \ge \frac{N}{16 d_1 \log N}$) and then over all $\binom{R_0}{k}$ subsets $S_0 \in \binom{A}{k} \subseteq \binom{B_0}{k}$ yields
+   $$\bar{\kappa}(S_k; U) \;\ge\; \frac{1}{288 \log N} \binom{R_0}{k}.$$
+   (The identical lower bound holds if instead $|U| = N$, since $2q \le |S_k| \le N$.)
+
+4. **Combining the two bounds:**
+   Using $\binom{R_0}{k} \ge \left(\frac{R_0}{2 k}\right)^k$ and $k! \le k^k$,
+   $$\bar{\kappa}(S_k; U)\, |S_k| \;\ge\; \frac{N}{4608 (\log N)^2} \cdot \frac{\binom{R_0}{k}}{32^k k!} \;\ge\; \frac{N}{4608 (\log N)^2} \left(\frac{R_0}{64 k^2}\right)^k \;\ge\; \frac{N}{4608 (\log N)^2} \cdot 2^k.$$
+   Since $k = \lfloor \frac{1}{12} \sqrt{R_0} \rfloor = \Theta((\frac{\log N}{\log\log N})^{1/2})$ (so $64 k^2 \le \frac{64}{144} R_0 < R_0/2$), taking cube roots gives
+   $$\left(\bar{\kappa}(S_k; U)\, |S_k|\right)^{1/3} \;\ge\; N^{1/3} \exp\!\left(+\Omega\!\left(\left(\frac{\log N}{\log\log N}\right)^{1/2}\right)\right). \quad \blacksquare$$
 
 ---
 
@@ -318,7 +334,7 @@ $$\sum_{d \in D} q(d)^{1/2} \;\gg\; \frac{N^{1/2}}{\log N} \sum_{\substack{d_1 \
 1. **Rankin-Tilted Hölder Over Difference Sets $T \subseteq [1, H]$ of Size $|T| = |U|$:**
    Bounding $\bar{\kappa}(S_\alpha; U) \le \frac{2}{|U|} \max_{|T|=|U|} \sum_{t \in T} r_{S_\alpha}(t)$ and applying Hölder with $\sigma = 1 + \eta$ gives $\left(\frac{H^{1+\eta}}{N}\right)^{1/q} \left(\sum_{t \le H} \frac{g(t)^q}{t^{1+\eta}}\right)^{1/q}$. Setting $\beta := \eta / q$ yields $\exp((\frac{1}{3\eta} + \frac{4}{3})\beta \log N)$ against $\exp(\frac{1}{\beta \log Y})$, which is *minimized* as $\eta \to \infty$ (recovering $\ell^\infty$!) and stalls at `1/2`. Why? Because our random law $w = \mathrm{law}(T_1 \cdot m)$ in Theorem 3a **already satisfies $\max_{t \le H} w(t) \le 1/N$**, so it lies inside the convex hull of uniform measures on sets $T \subseteq [1, H]$ of size $N$!
 2. **Positive-Semidefinite Kernel Splitting of $r_D(|w - z|/2)$:**
-   Writing $r_D(|w-z|/2) = \sum_{e \in D} \mathbf{1}_{w, z \in S_e}$ (for $w \neq z$) and applying Cauchy–Schwarz inside each $S_e$ eliminates $\kappa$ from Place 1 *and* replaces Place 2 by $\sum_{z_1 \neq z_2 \in U} r_D(|z_1 - z_2|)^2$, **but** creates a diagonal term $\sum_{d, e \in D} |S_e| = 2|D|^2 \ell \sim N^{7/3} \gg N^2$ (losing a factor of $\ell \sim N^{1/3}$ because $S_e$ has sparse density $2\ell/d \sim N^{-2/3}$ in $\mathbb{Z}/d\mathbb{Z}$ — the exact same modulus-density barrier as 4-paths in [REPORT.md](file:///D:/Arithmetica4Prizeproblems/scripts/ppl173_push/REPORT.md)!).
+   Writing $r_D(|w-z|/2) = \sum_{e \in D} \mathbf{1}_{w, z \in S_e}$ (for $w \neq z$) and applying Cauchy–Schwarz inside each $S_e$ eliminates $\kappa$ from Place 1 *and* replaces Place 2 by $\sum_{z_1 \neq z_2 \in U} r_D(|z_1 - z_2|)^2$, **but** creates a diagonal term $\sum_{d, e \in D} |S_e| = 2|D|^2 \ell \sim N^{7/3} \gg N^2$ (losing a factor of $\ell \sim N^{1/3}$ because $S_e$ has sparse density $2\ell/d \sim N^{-2/3}$ in $\mathbb{Z}/d\mathbb{Z}$ — the exact same modulus-density barrier as 4-paths).
 3. **Multiplicatively Weighted 3-Paths ($w(d) > 0$):**
    Weighting each $d \in D$ by $w(d)$ yields $|U| \gtrsim \ell (\sum_{d \in S} w(d))^{2/3} / (K_1^* \kappa_w)^{1/3}$, which on any single level set $S = S_k$ reduces identically to unweighted Lemma A' on $S_k$, hitting Barrier Theorem 2b.
 
@@ -327,24 +343,35 @@ Breaking past $\exp(O((\log n / \log\log n)^{1/2}))$ to pure polylogarithmic $n^
 
 ---
 
-## 4. Quantitative Frontier Comparison & Drop-In Lean 4 Upgrade Blueprint
+## 4. Quantitative Frontier Comparison & Completed Lean 4 Formalization
 
 ### 4.1 Complete Erdős #711 ($F(n)$) Frontier Table
+
+All numerical ratios below match `scripts/audit_half_theorem.py` at $\log n = 10^8$ ($X := \frac{\log n}{\log\log n} \approx 5.429 \times 10^6$, $X^{2/3} \approx 30{,}889$, $X^{1/2} \approx 2{,}330$):
 
 | Result | Bound on $F(n)$ | Leading Exponent Constant | Ratio to Chen–Korsky at $\log n = 10^8$ | Minimax Sharp? |
 | :--- | :--- | :---: | :---: | :---: |
 | **Erdős–Pomerance (1980)** | $O(n^{3/2})$ | — | — | — |
-| **`PPL173_Main.lean`** | $13 n^{10/7} + 2$ | — | — | Optimal for $C_4$ windows |
+| **Elementary $C_4$ bound** | $13 n^{10/7} + 2$ | — | — | Optimal for $C_4$ windows |
 | **Chen v1 (Jul 2026)** | $n^{1.40303 + o(1)}$ | — | — | Optimal for Katz–Tao windows |
-| **Chen–Korsky (`arXiv:2607.26450`)** | $n^{4/3}\exp\!\left(O\!\left(\frac{\log n}{\log\log n}\right)\right)$ | $\approx 0.616$ | $1.000\times$ | — |
-| **`PPL173_WorldRecordFourThirds.lean`** | $n^{4/3}\exp\!\left(O\!\left(\left(\frac{\log n}{\log\log n}\right)^{2/3}\right)\right)$ | $18^{-1/3} \approx 0.382$ (sharp) | $0.0675\times$ ($14.8\times$ smaller) | **Exact** for unabsorbed Lemma A/B (Thm 1) |
-| **THIS WORK (Theorem 2, Absorbed)** | **$n^{4/3}\exp\!\left(O\!\left(\left(\frac{\log n}{\log\log n}\right)^{1/2}\right)\right)$** | **$\frac{2}{3\sqrt{3}} \approx 0.385$ (sharp)** | **$\approx 0.0007\times$ ($\sim 1{,}400\times$ smaller)** | **Exact** for absorbed Lemma A'/B' (Thm 3a) |
+| **Chen–Korsky (`arXiv:2607.26450`)** | $n^{4/3}\exp\!\left(O\!\left(\frac{\log n}{\log\log n}\right)\right)$ | $\frac{8}{9}\log 2 \approx 0.616$ | $1.000\times$ | — |
+| **Unabsorbed `2/3` (`erdos711-four-thirds-lean4`)** | $n^{4/3}\exp\!\left(O\!\left(\left(\frac{\log n}{\log\log n}\right)^{2/3}\right)\right)$ | $3.039$ (drop-in) / $18^{-1/3} \approx 0.382$ (sharp) | $0.0281\times$ ($35.6\times$) / $0.00352\times$ ($284\times$) | **Exact** for unabsorbed Lemma A/B (Thm 1) |
+| **THIS WORK (Theorem 2, Absorbed)** | **$n^{4/3}\exp\!\left(O\!\left(\left(\frac{\log n}{\log\log n}\right)^{1/2}\right)\right)$** | **$3.731$ (drop-in) / $\frac{2}{3\sqrt{3}} \approx 0.385$ (sharp)** | **$0.00260\times$ ($385\times$) / $0.000268\times$ ($3{,}730\times$)** | **Exact** for absorbed Lemma A'/B' (Thm 3a) |
 
-*(Asymptotic scaling of $X = \frac{\log n}{\log\log n}$: at $\log n = 10^6$, $X = 72{,}382$, $X^{2/3} = 1{,}737$, $X^{1/2} = 269$ — **$6.5\times$** smaller than `2/3`; at $\log n = 10^8$, $X = 5.43 \times 10^6$, $X^{2/3} = 30{,}889$, $X^{1/2} = 2{,}330$ — **$13.3\times$** smaller than `2/3`.)*
+*(Asymptotic scaling of $X = \frac{\log n}{\log\log n}$: at $\log n = 10^6$, $X = 72{,}382$, $X^{2/3} = 1{,}737$, $X^{1/2} = 269$ — **$6.5\times$** smaller than `2/3`; at $\log n = 10^8$, $X = 5.43 \times 10^6$, $X^{2/3} = 30{,}889$, $X^{1/2} = 2{,}330$ — **$13.3\times$** smaller in bare $X^{1/2}/X^{2/3}$, **$10.8\times$** smaller comparing drop-in constants, and **$13.1\times$** smaller comparing sharp constants.)*
 
-### 4.2 ~200-Line Drop-In Lean 4 Upgrade Path for `PPL173_WorldRecordFourThirds.lean`
+### 4.2 Completed Lean 4 Kernel-Verified Formalizations (`v4.33.1`, Pure Mathlib)
 
-Upgrading [PPL173_WorldRecordFourThirds.lean](file:///D:/Arithmetica4Prizeproblems/lean/RHDirect/PPL173_WorldRecordFourThirds.lean) from `2/3` to `1/2` requires **zero changes** to Lemma C1, Lemma C2, the dyadic-power prime buckets, Regime 1, or the Hall Marriage Theorem glue — only three surgical upgrades:
-1. **Add Lemma A'0 (~35 lines):** `dyadic_harmonic_le_one` (`∑ d' ∈ Ioc ⌊X/2⌋ ⌊X⌋, (1:ℝ)/d' ≤ 1` from `⌊X⌋ ≤ 2 * ⌊X/2⌋ + 1`) and `sum_rD_mul_le_tau` (`∑ c ∈ Icc 1 (ℓ-1), r_D (c * e) ≤ (ℓ - 1) * (Nat.divisors e).card`).
-2. **Upgrade Lemma A $\to$ Lemma A' (~60 lines):** Filter $\mathcal{T}$ to $\mathcal{T}^{\mathrm{good}}$ (`r_D |w - u| ≤ K_1`), apply Markov's inequality for each $(d, \varepsilon, u, e, \delta)$ (`2 * A_B(e) ≤ (ℓ - 1) / 2`), and run the exact existing Case 1 / Case 2 reflection proof on $\mathcal{T}^{\mathrm{good}}$ with $K_1$ replacing $\kappa$ in the reconstruction multiplicity.
-3. **Upgrade Lemma B $\to$ Lemma B' & final exponent algebra (~100 lines):** Replace `κ^2` by `K_1 * κ` in `lemma_B_uniform_single` (producing `(K_1 * κ * M)^(1/3) / ℓ`), prove `(e + 1)^4 ≤ 81 * 2^e` by `Nat` induction for `τ(q_sm) ≤ 3^s * 2^{a/4}` (and `τ(d_m) ≤ 2^{k_m}`), and replace `max_k (e A / k)^k = e^A` with `max_k (e A / k)^(2k/3) = e^(2A/3)` so the geometric bucket sum $\sum_m R_m^{1/2}$ yields $\exp(O((\log n / \log\log n)^{1/2}))$.
+Both the new `1/2` upper bound and all four unconditional Cauchy–Schwarz minimax barrier theorems are formalized and kernel-verified in pure Mathlib (`0` warnings, `leanchecker: PASS`, axioms strictly `[propext, Classical.choice, Quot.sound]`):
+
+1. **`RHDirect/PPL173_WorldRecordHalf.lean` (5,727 lines):**
+   - `PPL173Half.lemma_A_prime_0`, `PPL173Half.lemma_A_prime_nodiv`, `PPL173Half.lemma_A_prime` (dyadic harmonic bound + bad-difference absorption).
+   - `PPL173Half.lemma_B_prime_single`, `PPL173Half.lemma_B_prime` (uniform $|U|$-elimination with $(K_1 \kappa M)^{1/3}/\ell$).
+   - `PPL173Half.ppl173_world_record_half_closed_iSup` and `PPL173Half.ppl173_world_record_half_iSup` (both closed `(m, m + h]` and open `(m, m + L)` pure-Mathlib `sInf`/`⨆` forms, with explicit `Nonempty` and `BddAbove` witnesses).
+2. **`RHDirect/PPL173_CauchyBarriers.lean`:**
+   - `PPL173Barriers.barrier1_unabsorbed_two_thirds` (Theorem 1: universal `2/3` unabsorbed barrier over all set-theoretic covers).
+   - `PPL173Barriers.barrier2a_absorbed_half` (Theorem 3a: universal `1/2` absorbed barrier over all set-theoretic covers, even with $K_1 \equiv 1$).
+   - `PPL173Barriers.barrier2b_single_slice_avg_half` (Theorem 3b: single prime-count slice $S_k$ with $\ell^2$ average $\bar{\kappa}(S_k; U)$ and $|U| = |S_k|$).
+   - `PPL173Barriers.barrier2c_deterministic_U0_all_partitions` (Theorem 3c: single deterministic primorial progression $U_0$ of size $N$ forcing $\exp(c \sqrt{\log N} / \log\log N)$ across all set-theoretic covers simultaneously).
+
+*(Note on exact constants: the Lean 4 formalizations prove all five headline theorems unconditionally with explicit positive constants $C, c > 0$ using elementary Chebyshev dyadic prime counting; tightening the leading constants to the exact PNT values $18^{-1/3}$, $\frac{2}{3\sqrt{3}}$, and $\frac{4}{3\sqrt{3}}$ is carried out in Sections 1–3 above.)*
