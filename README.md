@@ -104,9 +104,9 @@ theorem PPL173Barriers.barrier2c_deterministic_U0_all_partitions :
 - **Toolchain:** `leanprover/lean4:v4.33.1`, Mathlib commit `0df444a360eaa60ab8c11dca51a86af692955474`
 - **Static zero-cheat scan (both files):** `0` hits for `sorry`, `sorryAx`, `admit`, `axiom`, `opaque`, `native_decide`, `unsafe`, `@[implemented_by]`, `@[extern]`, bare `import Mathlib` (targeted `Mathlib.*` imports only).
 
-| Module | Lines | SHA-256 | Clean Compile | `leanchecker` | Exhaustive `Lean.collectAxioms` |
+| Module | Lines | SHA-256 (LF) | Clean Compile | `leanchecker` | Exhaustive `Lean.collectAxioms` |
 |---|---:|---|---|---|---|
-| `RHDirect/PPL173_WorldRecordHalf.lean` | 5,727 | `A35A0A536AF03944B959CD54B01A65216DF6A111D20C59935CE84389EE5E1A47` | `0` errors, `0` warnings (`229.64s`) | **PASS** | `486` constants; `[Quot.sound, Classical.choice, propext]` |
+| `RHDirect/PPL173_WorldRecordHalf.lean` | 5,727 | `1039A7CCD03F34995EAF9E27181DEB905D9B1CF1D2F65D28F55EFCAC13D2AB2F` | `0` errors, `0` warnings (`229.64s`) | **PASS** | `486` constants; `[Quot.sound, Classical.choice, propext]` |
 | `RHDirect/PPL173_CauchyBarriers.lean` | 3,415 | `24F7D20F256896EB5C7C405D4D058FC59AD557DAA9E571E25334C744147DEF42` | `0` errors, `0` warnings (`194.48s`) | **PASS** | `255` constants; `[Quot.sound, Classical.choice, propext]` |
 
 ### Live `#print axioms` Output
