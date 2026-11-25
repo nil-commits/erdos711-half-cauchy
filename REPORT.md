@@ -232,17 +232,15 @@ Summing over dyadic scales $0 \le j < j_0$ multiplies by $\sum_{j=0}^\infty 2^{-
 
 ---
 
-### Step 4 — Tightening the Constant to the Exact Minimax Optimum $\frac{2}{3\sqrt{3}} \approx 0.38490$ (and Alternative 10-Line Multiplicative-Weight Proof)
+### Step 4 — Tightening the Constant to the Exact Minimax Optimum $\frac{2}{3\sqrt{3}} \approx 0.38490$
 
 Three elementary tightenings shrink the constant $3.731$ all the way down to $\frac{2}{3\sqrt{3}} + o(1) \approx 0.38490$:
 1. **Complementary-Divisor Cap ($R_m \to R'_m \approx R_m / 4$):** For any $t \in [1, H]$ that has at least one divisor $d_0 \in S_\alpha \subseteq (N/2, N]$ (otherwise $r_{S_\alpha}(t) = 0$), write $c_0 := t / d_0 < 2H / N$. Then $\Omega_{B_m}(t) = \Omega_{B_m}(d_0) + \Omega_{B_m}(c_0) = k_m + \Omega_{B_m}(c_0)$, so the global excess prime budget is $\sum_j (r_j - k_j) \log p_{\min}(I_j) \le \log(2H/N) = (\frac{1}{3} + o(1))\log n =: L'$, replacing $\frac{4}{3}$ by $\frac{1}{3}$ (a factor of $2$ savings in $\sqrt{\cdot}$!).
 2. **Subexponential $K_1(S_\alpha)$ (Eliminating the Factor $2^{k_m}$):** In Lemma A'0, for $e, d \in S_\alpha$ with $g = \gcd(d, e)$, writing $e' := e/g$ and $d' := d/g$, we have $\Omega_{I_j}(d') = \Omega_{I_j}(e') =: j_m$ and $d' \in (e'/2, 2e']$. Summing $\frac{1}{d'}$ over such $d'$ via dyadic Rankin gives $\sum_{j_m = 0}^{k_m} \binom{k_m}{j_m} \frac{(C \mu_m)^{j_m}}{j_m!} \le \exp(2\sqrt{C \mu_m k_m})$ — **subexponential** in $k_m$, eliminating the $2^{k_m}$ factor completely!
-3. **Global Lagrange Optimization (or Multiplicative-Weight Hölder):** Applying Lagrange multipliers to $\sum_j r'_j w_j \le L'$ and $\sum_j k_j = K$ gives
+3. **Global Lagrange Optimization:** Applying Lagrange multipliers to $\sum_j r'_j w_j \le L'$ and $\sum_j k_j = K$ gives
    $$\max_K \left(\frac{e \sqrt{L' S_1}}{K}\right)^{2K/3} = \exp\!\left(\frac{2}{3}\sqrt{L' S_1}\right), \qquad S_1 := \sum_{p > Y_{\mathrm{cut}}} \frac{1}{p \log p} \sim \frac{1}{\log\log n},$$
    yielding the **sharp upper bound constant**
    $$\frac{2}{3}\sqrt{\frac{1}{3}} = \frac{2}{3\sqrt{3}} \approx 0.38490 \qquad \text{on } \left(\frac{\log n}{\log\log n}\right)^{1/2}.$$
-
-*(Alternative 10-line zero-binomial proof of `1/2`: Apply Hölder to $\sum_\alpha (K_{1,\alpha}\bar{\kappa}_\alpha(U) M_\alpha)^{1/3} \le \left(\sum_\alpha w_\alpha \bar{\kappa}_\alpha(U)\right)^{1/3} \left(\sum_\alpha w_\alpha^{-1/2} (K_{1,\alpha} M_\alpha)^{1/2}\right)^{2/3}$ with multiplicative weight $w(d) = \prod_{p^e \| d,\, p > Y} \theta_p^e$, $\theta_p := p^\beta - 1 \approx \beta \log p$. Then $\max_{t \le H} \sum_{d \mid t} w(d) \le H^\beta = e^{\beta \log H}$, while the second factor is $\exp(\sum_{p > Y} \frac{1}{p\theta_p}) = \exp(\frac{1}{\beta \log Y})$, and optimizing $\beta$ immediately gives $\exp(\frac{2\sqrt{2}}{3}\sqrt{\frac{\log H}{\log Y}})$!)*
 
 ---
 

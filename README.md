@@ -8,7 +8,7 @@ This repository contains standalone, kernel-verified Lean 4 (`v4.33.1`, pure Mat
 - **What is Lean 4 kernel-verified vs. paper-proved:**
   - **Lean 4 kernel-verified (`RHDirect/PPL173_WorldRecordHalf.lean`, 5,727 lines):** The unconditional `1/2` upper bound $F(n) \le n^{4/3}\exp\!\left(C(\log n/\log\log n)^{1/2}\right)$ (both closed `(m, m + h]` and open `(m, m + L)` pure-Mathlib `sInf`/`⨆` forms, plus explicit `Nonempty` and `BddAbove` witnesses), Lemma A'0, Lemma A', Lemma B', Lemma C1, and the factored divisor-count and Euler-product Rankin bounds.
   - **Lean 4 kernel-verified (`RHDirect/PPL173_CauchyBarriers.lean`, 3,415 lines):** All four unconditional asymptotic minimax barrier theorems — Barrier Theorem 1 (`2/3` unabsorbed wall over all set-theoretic covers), Barrier Theorem 2a (`1/2` absorbed wall over all covers, even with $K_1 \equiv 1$), Barrier Theorem 2b (`1/2` wall for the $\ell^2$ average $\bar{\kappa}(S_k, U)$ on a single prime-count slice $S_k$ with $|U| = |S_k|$), and Barrier Theorem 2c (single deterministic primorial progression $U_0$ of size $N$ simultaneously forcing $\exp(c \sqrt{\log N} / \log\log N)$ across all covers) — with explicit positive constants $c > 0$.
-  - **Paper-proved (`REPORT.md`, audited numerically by `scripts/audit_half_theorem.py`):** Refinement of the leading constants in the upper and lower bounds to the exact matching PNT values $18^{-1/3} \approx 0.38157$, $\frac{2}{3\sqrt{3}} \approx 0.38490$, and $\frac{4}{3\sqrt{3}} \approx 0.76980$.
+  - **Paper-proved (`REPORT.md`; not Lean-verified):** Refinement of the leading constants in the upper and lower bounds to the exact matching PNT values $18^{-1/3} \approx 0.38157$, $\frac{2}{3\sqrt{3}} \approx 0.38490$, and $\frac{4}{3\sqrt{3}} \approx 0.76980$. (`scripts/audit_half_theorem.py` numerically spot-checks Lemma A'0, Lemma A', and $(e+1)^4 \le 81 \cdot 2^e$, and prints a log-space comparison table using the paper constants.)
 
 ---
 
@@ -144,22 +144,22 @@ lake env leanchecker RHDirect.PPL173_CauchyBarriers
 
 ## Main Mathematical Results (`REPORT.md`)
 
-1. **Barrier Theorem 1 (Exact `2/3` Minimax Wall Without Absorption — Lean 4 verified):**
+1. **Barrier Theorem 1 (Exact `2/3` Minimax Wall Without Absorption — asymptotic `∃ c > 0` Lean 4 verified; exact $18^{-1/3}$ paper-proved in `REPORT.md`):**
    Under the unabsorbed 3-path Lemma A/B criterion, every set-theoretic partition $D = (N/2, N] = \bigsqcup_\alpha S_\alpha$ satisfies
    $$\sum_\alpha \kappa(S_\alpha; N^{4/3})^{2/3}\, |S_\alpha|^{1/3} \;\ge\; N^{1/3} \exp\!\left(\left(18^{-1/3} - o(1)\right)\left(\frac{\log N}{\log\log N}\right)^{2/3}\right) \qquad (18^{-1/3} \approx 0.38157),$$
-   matching the unabsorbed upper bound to the exact leading constant.
+   matching the unabsorbed upper bound to the exact leading constant in `REPORT.md` (`PPL173Barriers.barrier1_unabsorbed_two_thirds` proves the unconditional asymptotic $\exp(c (\log N / \log\log N)^{2/3})$ wall with `c = 1/4000` in Lean 4).
 
-2. **Theorem 2 (Bad-Difference Absorption — Breaking `2/3` Down to `1/2`, Lean 4 verified):**
+2. **Theorem 2 (Bad-Difference Absorption — Breaking `2/3` Down to `1/2`; asymptotic `∃ C > 0` Lean 4 verified, exact $\frac{2}{3\sqrt{3}}$ paper-proved in `REPORT.md`):**
    Using the dyadic harmonic identity $\sum_{c=1}^{\ell-1} r_D(c \cdot e) \le (\ell - 1)\tau(e)$ (Lemma A'0) and Markov's inequality, at most $\frac{\ell-1}{2}$ choices of $w \in S_{e,\delta}\setminus\{u\}$ have $r_D(|w-u|) > K_1 := 4\max_{e \in D}\tau(e)$, absorbing all bad 3-paths directly into the LHS (Lemma A'). This reduces the $\kappa$-exponent in Lemma B from $2/3$ to $1/3$ and yields
    $$F(n) \;\le\; n^{4/3} \exp\!\left(O\!\left(\left(\frac{\log n}{\log\log n}\right)^{1/2}\right)\right)$$
-   with sharp leading constant $\frac{2}{3\sqrt{3}} + o(1) \approx 0.38490$ (paper proof) and explicit constant verified in Lean 4 (`RHDirect/PPL173_WorldRecordHalf.lean`).
+   with sharp leading constant $\frac{2}{3\sqrt{3}} + o(1) \approx 0.38490$ (paper proof in `REPORT.md`) and an unconditional asymptotic constant `C = max 601 (log(N₀ + 2))` (`N₀ = ⌈exp(exp 200)⌉`) verified in Lean 4 (`RHDirect/PPL173_WorldRecordHalf.lean`).
 
-3. **Barrier Theorems 2a, 2b, 2c (Exact `1/2` Cauchy–Schwarz Wall Against Polylogarithmic Bounds — all Lean 4 verified):**
+3. **Barrier Theorems 2a, 2b, 2c (Exact `1/2` Cauchy–Schwarz Wall Against Polylogarithmic Bounds — asymptotic `∃ c > 0` Lean 4 verified; exact $\frac{2}{3\sqrt{3}}$ and $\frac{4}{3\sqrt{3}}$ paper-proved in `REPORT.md`):**
    - **Barrier 2a:** Every set-theoretic partition $D = \bigsqcup_\alpha S_\alpha$ (even with $K_1 \equiv 1$) satisfies
      $$\sum_\alpha \kappa(S_\alpha; N^{4/3})^{1/3}\, |S_\alpha|^{1/3} \;\ge\; N^{1/3} \exp\!\left(\left(\frac{2}{3\sqrt{3}} - o(1)\right)\left(\frac{\log N}{\log\log N}\right)^{1/2}\right),$$
-     matching Theorem 2 to the exact leading constant.
-   - **Barrier 2b:** Replacing worst-case $\ell^\infty$ $\kappa$ in Place 2 by the $\ell^2$ average $\bar{\kappa}(S_k; U) = |U|^{-2}\sum_{z_1 \neq z_2 \in U} r_{S_k}(|z_1 - z_2|)$ still stalls at exponent `1/2` on a single prime-count slice $S_k$ with $|U| = |S_k|$.
-   - **Barrier 2c:** A single deterministic primorial set $U_0 = \{P \cdot j : 1 \le j \le N\} \subseteq (0, N^{4/3}]$ simultaneously forces $\exp(\Omega(\sqrt{\log N}/\log\log N))$ across all set-theoretic partitions.
+     matching Theorem 2 to the exact leading constant in `REPORT.md` (`PPL173Barriers.barrier2a_absorbed_half` proves `c = 1/2000` in Lean 4).
+   - **Barrier 2b:** Replacing worst-case $\ell^\infty$ $\kappa$ in Place 2 by the $\ell^2$ average $\bar{\kappa}(S_k; U) = |U|^{-2}\sum_{z_1 \neq z_2 \in U} r_{S_k}(|z_1 - z_2|)$ still stalls at exponent `1/2` on a single prime-count slice $S_k$ with $|U| = |S_k|$ (`PPL173Barriers.barrier2b_single_slice_avg_half` proves `c = 1/1500` in Lean 4).
+   - **Barrier 2c:** A single deterministic primorial set $U_0 = \{P \cdot j : 1 \le j \le N\} \subseteq (0, N^{4/3}]$ simultaneously forces $\exp(\Omega(\sqrt{\log N}/\log\log N))$ across all set-theoretic partitions (`PPL173Barriers.barrier2c_deterministic_U0_all_partitions` proves `c = 1/12000` with exponent $(\log N)^{1/2} / \log\log N$ in Lean 4; `REPORT.md` proves leading constant $\frac{4}{3\sqrt{3}} \approx 0.76980$).
 
 ---
 
@@ -169,10 +169,10 @@ lake env leanchecker RHDirect.PPL173_CauchyBarriers
 |---|---|
 | `RHDirect/PPL173_WorldRecordHalf.lean` | Standalone Lean 4 (`v4.33.1`, pure Mathlib, 5,727 lines) proof of the `1/2` upper bound (`0` warnings, `leanchecker: PASS`, axioms `[propext, Classical.choice, Quot.sound]`) |
 | `RHDirect/PPL173_CauchyBarriers.lean` | Standalone Lean 4 (`v4.33.1`, pure Mathlib, 3,415 lines) proof of all four Cauchy–Schwarz minimax barrier theorems (`0` warnings, `leanchecker: PASS`, axioms `[propext, Classical.choice, Quot.sound]`) |
-| `lakefile.toml`, `lean-toolchain` | Pinned Lean `v4.33.1` and Mathlib `0df444a360eaa60ab8c11dca51a86af692955474` build configuration |
+| `lakefile.toml`, `lake-manifest.json`, `lean-toolchain` | Pinned Lean `v4.33.1` and Mathlib `0df444a360eaa60ab8c11dca51a86af692955474` build configuration |
 | `REPORT.md` | Complete self-contained proofs of Barrier Theorem 1, Lemma A'0/A'/B', Theorem 2 (`1/2` bound), and Barrier Theorems 2a/2b/2c |
 | `scripts/audit_half_theorem.py` | Numerical/empirical audit of Lemma A'0, Lemma A', the `Nat` divisor bound $(e+1)^4 \le 81 \cdot 2^e$, and log-space asymptotic comparisons |
-| `LICENSE` | MIT License |
+| `LICENSE` | Apache License 2.0 |
 
 ---
 

@@ -4,7 +4,7 @@ Remote numerical & empirical audit for PPL 173 (Erdos #711):
   1. Lemma A'0: sum_{c=1}^{l-1} r_D(c*e) <= (l-1) * tau(e) for D in (N/2, N].
   2. Lemma A': Absorbed 3-path modular reflection inequality (both |T_good| absorption
      and full inequality with K_1 = 4 * max_{e in D} tau(e)) on 50 random instances.
-  3. Lemma B' uniform |U|-elimination & Nat inequality (e+1)^4 <= 81 * 2^e.
+  3. Elementary Nat inequality (e+1)^4 <= 81 * 2^e for 0 <= e <= 1000.
   4. Exact log-space comparison of log(H / n^{4/3}) for:
        - Chen-Korsky (arXiv:2607.26450): O(log n / log log n)
        - Previous Lean world record: O((log n / log log n)^{2/3})
